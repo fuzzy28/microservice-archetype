@@ -134,57 +134,117 @@ public class ${domainName}ServiceTest extends AbstractTest {
     @Test
     public void whenUpdateWithValidIdThenShouldSucces() {
 	// assert saving
-	${domainName} sdd = new ${domainName}();
-	sdd.set${domainName}Code("SDD");
-	sdd.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT");
-	sdd.setActive(true);
+	${domainName} ${domainNameVariable} = new ${domainName}();
+	
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
 
-	${domainName} sddPersisted = ${domainNameVariable}Service.save(sdd);
-	assertNotNull("failure - ${domainNameVariable} was not persisted", sddPersisted);
+	${domainName} ${domainNameVariable}Persisted = ${domainNameVariable}Service.save(${domainNameVariable});
+	assertNotNull("failure - ${domainNameVariable} was not persisted", ${domainNameVariable}Persisted);
 
-	sddPersisted.set${domainName}Code("SDD UPDATED");
-	sddPersisted.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT TEST");
-	sddPersisted.setActive(false);
-
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
+	 ${domainNameVariable}.set$capitalizeProp(${domainNameVariable}Persisted.get$capitalizeProp());
+	 
 	${domainName} modified;
 	assertNotNull("failure - ${domainNameVariable} was not updated",
-		modified = ${domainNameVariable}Service.update(sddPersisted));
-	assertEquals("failure - ${domainNameVariable} code not match",
-		sddPersisted.get${domainName}Code(), modified.get${domainName}Code());
-	assertEquals("failure - ${domainNameVariable} name not match",
-		sddPersisted.get${domainName}Name(), modified.get${domainName}Name());
-	assertEquals("failure - ${domainNameVariable} active not match", sddPersisted.isActive(),
-		modified.isActive());
+		modified = ${domainNameVariable}Service.update(${domainNameVariable}Persisted));
+	
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	assertEquals("failure - $name does not match", ${domainNameVariable}Persisted.get$capitalizeProp(),
+	    		modified.get$capitalizeProp());
+	 #end
     }
 
     @Test
     public void whenUpdatingWithInvalidIdShouldFail() {
 	// assert saving
-	${domainName} sdd = new ${domainName}();
-	sdd.set${domainName}Code("SDD");
-	sdd.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT");
-	sdd.setActive(true);
+	${domainName} ${domainNameVariable} = new ${domainName}();
+
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
 
 	assertNull("failure - entity without ID should not be updated",
-		${domainNameVariable}Service.update(sdd));
+		${domainNameVariable}Service.update(${domainNameVariable}));
 
-	sdd.set$propertyIdentifier(Long.MAX_VALUE);
+	    	${domainNameVariable}.set$propertyIdentifier(Long.MAX_VALUE);
 
 	assertNull("failure - entity with no existing ID should not be updated",
-		${domainNameVariable}Service.update(sdd));
+		${domainNameVariable}Service.update(${domainNameVariable}));
     }
 
     @Test
     public void whenDeletingThenShouldNoLongerExists() {
 	// assert saving
-	${domainName} sdd = new ${domainName}();
-	sdd.set${domainName}Code("SDD");
-	sdd.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT");
-	sdd.setActive(true);
+	${domainName} ${domainNameVariable} = new ${domainName}();
+	
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
 
-	${domainName} sddPersisted = ${domainNameVariable}Service.save(sdd);
-	${domainNameVariable}Service.delete(sddPersisted.get$propertyIdentifier());
+	${domainName} ${domainNameVariable}Persisted = ${domainNameVariable}Service.save(${domainNameVariable});
+	${domainNameVariable}Service.delete(${domainNameVariable}Persisted.get$propertyIdentifier());
 	assertNull("failure - resource has not been deleted",
-		${domainNameVariable}Service.findOne(sddPersisted.get$propertyIdentifier()));
+		${domainNameVariable}Service.findOne(${domainNameVariable}Persisted.get$propertyIdentifier()));
     }
 }
