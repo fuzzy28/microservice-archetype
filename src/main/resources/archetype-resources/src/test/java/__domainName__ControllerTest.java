@@ -35,6 +35,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+#set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
+
 @Transactional
 public class ${domainName}ControllerTest extends AbstractControllerTest {
 
@@ -54,27 +56,56 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     }
 
     protected Collection<${domainName}> getAll${domainName}s() {
-	Collection<${domainName}> deps = new ArrayList<>();
-	${domainName} sdd = new ${domainName}();
-	sdd.setId(1L);
-	sdd.set${domainName}Code("SDD");
-	sdd.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT");
-	sdd.setActive(true);
-	deps.add(sdd);
+	Collection<${domainName}> ${domainNameVariable}s = new ArrayList<>();
+	${domainName} ${domainNameVariable} = new ${domainName}();
+	
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
+	 ${domainNameVariable}.set$propertyIdentifier(1L);
+	 ${domainNameVariable}s.add(${domainNameVariable});
 
-	${domainName} fep = new ${domainName}();
-	fep.setId(2L);
-	fep.set${domainName}Code("FEP");
-	fep.set${domainName}Name("FRONT END PROCESSING DEPARTMENT");
-	fep.setActive(true);
-	deps.add(fep);
-	return deps;
+	${domainName} ${domainNameVariable}2 = new ${domainName}();
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}2.set$capitalizeProp("Test");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}2.set$capitalizeProp(true);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}2.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}2.set$capitalizeProp(1);
+	    	#end
+	 #end
+	 ${domainNameVariable}2.set$propertyIdentifier(2L);
+
+	
+	 ${domainNameVariable}s.add(${domainNameVariable}2);
+	return ${domainNameVariable}s;
     }
 
     protected ${domainName} getSingle${domainName}(Long id) {
 	Optional<${domainName}> ${domainNameVariable} = getAll${domainName}s()
 		.stream()
-		.filter(d -> d.getId() == id)
+		.filter(d -> d.get$propertyIdentifier() == id)
 		.findFirst();
 	return ${domainNameVariable}.isPresent() ? ${domainNameVariable}.get() : null;
     }
@@ -130,7 +161,7 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     @Test
     public void whenSavingWithoutIdThenEntityShouldBeSaved() throws Exception {
 	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
-	${domainNameVariable}.setId(null);
+	${domainNameVariable}.set$propertyIdentifier(null);
 	when(${domainNameVariable}Service.save(any(${domainName}.class))).thenReturn(${domainNameVariable});
 
 	MvcResult response = postRequest(super.objectToJson(${domainNameVariable}));
@@ -224,15 +255,29 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 	    throws JsonProcessingException, Exception {
 	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
 
-	${domainNameVariable}.set${domainName}Code("SDD UP");
-	${domainNameVariable}.set${domainName}Name("SOFTWARE DEVELOPMENT DEPARTMENT TEST");
-	${domainNameVariable}.setActive(false);
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	#if ($type.toLowerCase().equals("string"))
+	    	    ${domainNameVariable}.set$capitalizeProp("Test Updated");
+	    	#elseif ($type.toLowerCase().equals("boolean"))
+	    	    ${domainNameVariable}.set$capitalizeProp(false);
+		#elseif ($type.toLowerCase().equals("long"))
+	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+		#elseif ($type.toLowerCase().equals("int"))
+		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#end
+	 #end
+	 ${domainNameVariable}.set$propertyIdentifier(1L);
 
 	when(${domainNameVariable}Service.update(any(${domainName}.class))).thenReturn(${domainNameVariable});
 
 	MvcResult response = putRequest(
 		super.objectToJson(${domainNameVariable}),
-		${domainNameVariable}.getId());
+		${domainNameVariable}.get$propertyIdentifier());
 
 	verify(${domainNameVariable}Service, times(1)).update(any(${domainName}.class));
 
@@ -268,7 +313,7 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 	MvcResult response = mockMvc
 		.perform(
 			MockMvcRequestBuilders
-				.delete(BASE_URI + "/" + ${domainNameVariable}.getId()))
+				.delete(BASE_URI + "/" + ${domainNameVariable}.get$propertyIdentifier()))
 		.andReturn();
 
 	assertEquals(
@@ -322,17 +367,14 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     }
 
     private void assertContentEquals(${domainName} expected, ${domainName} actual) {
-	assertEquals(
-		"failure - ${domainNameVariable} code not equal",
-		expected.get${domainName}Code(),
-		actual.get${domainName}Code());
-	assertEquals(
-		"failure - ${domainNameVariable} name not equal",
-		expected.get${domainName}Name(),
-		actual.get${domainName}Name());
-	assertEquals(
-		"failure - ${domainNameVariable} status not equal",
-		expected.isActive(),
-		actual.isActive());
+	 #foreach($prop in $propertyList.split(","))
+		#set( $index = ${prop.indexOf("=")} )
+	    	#set( $name = ${prop.substring(0, $index)} )
+	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+		#set( $index = $index + 1 )
+	    	#set( $type = ${prop.substring($index)} )
+	    	assertEquals("failure - $name does not match", expected.get$capitalizeProp(),
+			actual.get$capitalizeProp());
+	 #end
     }
 }
