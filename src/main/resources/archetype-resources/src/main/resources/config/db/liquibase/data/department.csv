@@ -1,0 +1,4 @@
+id,departmentcode,departmentname,active
+1,ADMIN,Administration Department,true
+2,HRD,Human Resource Department,true
+3,LCD,Legal & Compliance Department,true
