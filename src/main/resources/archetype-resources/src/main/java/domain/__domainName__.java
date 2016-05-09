@@ -5,11 +5,9 @@ package ${package}.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * The ${domainName} class is the most important entity of this service.
@@ -21,53 +19,34 @@ import javax.validation.constraints.Size;
 @Entity
 public class ${domainName} {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "${domainNameVariable}code")
-    @NotNull(message = "err.${domainNameVariable}code.notnull")
-    @Size(min = 1, max = 10, message = "err.${domainNameVariable}code.size")
-    private String ${domainNameVariable}Code;
-
-    @Column(name = "${domainNameVariable}name")
-    @NotNull(message = "err.${domainNameVariable}name.notnull")
-    @Size(min = 1, max = 100, message = "err.${domainNameVariable}name.size")
-    private String ${domainNameVariable}Name;
-
-    @Column
-    private boolean active = true;
-
-    public Long getId() {
-	return id;
+    #foreach($prop in $propertyList.split(","))
+    
+	#set( $index = ${prop.indexOf("=")} )
+    	#set( $name = ${prop.substring(0, $index)} )
+    	#set( $lowerCaseProp = ${name.toLowerCase()} )
+	#set( $index = $index + 1 )
+    	#set( $type = ${prop.substring($index)} )
+    	#if ($name.equals($propertyId))
+    	    @Id
+    	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    	#end
+    @Column(name = "$lowerCaseProp")
+    private $!type $!name;
+    #end
+    #foreach($prop in $propertyList.split(","))
+	#set( $index = ${prop.indexOf("=")} )
+    	#set( $name = ${prop.substring(0, $index)} )
+    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+	#set( $index = $index + 1 )
+    	#set( $type = ${prop.substring($index)} )
+    public $type get$capitalizeProp() {
+        return $name;
     }
-
-    public void setId(Long id) {
-	this.id = id;
+    
+    public $type set$capitalizeProp($type $name) {
+        return this.$name = $name;
     }
-
-    public String get${domainName}Code() {
-	return ${domainNameVariable}Code;
-    }
-
-    public void set${domainName}Code(String ${domainNameVariable}Code) {
-	this.${domainNameVariable}Code = ${domainNameVariable}Code;
-    }
-
-    public String get${domainName}Name() {
-	return ${domainNameVariable}Name;
-    }
-
-    public void set${domainName}Name(String ${domainNameVariable}Name) {
-	this.${domainNameVariable}Name = ${domainNameVariable}Name;
-    }
-
-    public boolean isActive() {
-	return active;
-    }
-
-    public void setActive(boolean active) {
-	this.active = active;
-    }
+    
+    #end
 
 }

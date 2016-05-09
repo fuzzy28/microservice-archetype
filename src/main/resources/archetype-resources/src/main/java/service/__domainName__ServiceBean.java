@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementation of ${domainName} Service
  * 
- * @author Joel F. Ruelos Jr.
+ * @author ${author}
  * @since 1.0
  */
-
+#set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ${domainName}ServiceBean implements ${domainName}Service {
@@ -46,7 +46,7 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
     public ${domainName} save(${domainName} persist) {
 
 	${domainName} ${domainNameVariable} = null;
-	if (persist != null && persist.getId() == null) {
+	if (persist != null && persist.get$propertyIdentifier() == null) {
 	    ${domainNameVariable} = saveOrUpdate(persist);
 	}
 
@@ -59,8 +59,8 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
     public ${domainName} update(${domainName} update) {
 
 	${domainName} ${domainNameVariable} = null;
-	if (update != null && update.getId() != null
-		&& ${domainNameVariable}Repository.findOne(update.getId()) != null) {
+	if (update != null && update.get$propertyIdentifier() != null
+		&& ${domainNameVariable}Repository.findOne(update.get$propertyIdentifier()) != null) {
 	    ${domainNameVariable} = saveOrUpdate(update);
 	}
 

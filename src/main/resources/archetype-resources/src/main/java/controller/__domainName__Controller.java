@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ${author}
  * @since 1.0
  */
-
+#set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 @RequestMapping("/${domainNameVariable}s")
 @RestController
 public class ${domainName}Controller {
@@ -69,13 +69,13 @@ public class ${domainName}Controller {
     public ResponseEntity<${domainName}> save${domainName}(
 	    @Valid @RequestBody ${domainName} persist) {
 
-	if (persist == null || persist.getId() != null) {
+	if (persist == null || persist.get$propertyIdentifier() != null) {
 	    throw new ${domainName}NotPersistedException();
 	}
 
 	${domainName} ${domainNameVariable} = ${domainNameVariable}Service.save(persist);
 	HttpHeaders headers = new HttpHeaders();
-	headers.add("location", String.format("/${domainNameVariable}s/%d", ${domainNameVariable}.getId()));
+	headers.add("location", String.format("/${domainNameVariable}s/%d", ${domainNameVariable}.get$propertyIdentifier()));
 	return new ResponseEntity<${domainName}>(${domainNameVariable}, headers, HttpStatus.CREATED);
     }
 
@@ -88,7 +88,7 @@ public class ${domainName}Controller {
 	    @Valid @RequestBody ${domainName} persist,
 	    @PathVariable("id") Long ${domainNameVariable}Id) {
 
-	if (persist.getId() != null && persist.getId() != ${domainNameVariable}Id) {
+	if (persist.get$propertyIdentifier() != null && persist.get$propertyIdentifier() != ${domainNameVariable}Id) {
 	    throw new ${domainName}IdNotConsistentException();
 	}
 

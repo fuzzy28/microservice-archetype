@@ -10,7 +10,7 @@ import ${package}.domain.${domainName};
 /**
  * ${domainName} Service Interface
  * 
- * @author Joel F. Ruelos Jr.
+ * @author ${author}
  * @since 1.0
  */
 
