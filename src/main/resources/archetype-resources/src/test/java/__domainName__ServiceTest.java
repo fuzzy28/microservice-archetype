@@ -29,17 +29,21 @@ public class ${domainName}ServiceTest extends AbstractTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
-	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
-		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
-		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+
+	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
+		    	#if ($type.toLowerCase().equals("string"))
+		    	    ${domainNameVariable}.set$capitalizeProp("Test");
+		    	#elseif ($type.toLowerCase().equals("boolean"))
+		    	    ${domainNameVariable}.set$capitalizeProp(true);
+			#elseif ($type.toLowerCase().equals("long"))
+		    	    ${domainNameVariable}.set$capitalizeProp(1L);
+			#elseif ($type.toLowerCase().equals("int"))
+			    ${domainNameVariable}.set$capitalizeProp(1);
+		    	#end	    	   
 	    	#end
+
+
 	 #end
-	${domainNameVariable}.set$propertyIdentifier(null);    
 	${domainName} ${domainNameVariable}Persisted = ${domainNameVariable}Service.save(${domainNameVariable});
 	assertNotNull("failure - ${domainNameVariable} was not persisted", ${domainNameVariable}Persisted);
     }
@@ -79,17 +83,22 @@ public class ${domainName}ServiceTest extends AbstractTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
-	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
-		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
-		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
-	    	#end
-	 #end
 
+	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
+		    	#if ($type.toLowerCase().equals("string"))
+		    	    ${domainNameVariable}.set$capitalizeProp("Test");
+		    	#elseif ($type.toLowerCase().equals("boolean"))
+		    	    ${domainNameVariable}.set$capitalizeProp(true);
+			#elseif ($type.toLowerCase().equals("long"))
+		    	    ${domainNameVariable}.set$capitalizeProp(1L);
+			#elseif ($type.toLowerCase().equals("int"))
+			    ${domainNameVariable}.set$capitalizeProp(1);
+		    	#end
+	    	#end
+
+
+	 #end
+	 
 	${domainName} ${domainNameVariable}Persisted = ${domainNameVariable}Service.save(${domainNameVariable});
 	assertNotNull("failure - ${domainNameVariable} was not persisted", ${domainNameVariable}Persisted);
 
@@ -110,6 +119,7 @@ public class ${domainName}ServiceTest extends AbstractTest {
 		    ${domainNameVariable}2.set$capitalizeProp(1);
 	    	#end
 	 #end
+	${domainNameVariable}2.set$propertyIdentifier(null);
 	assertNotNull("failure - ${domainNameVariable} was not persisted",
 		${domainNameVariable}Service.save(${domainNameVariable}2));
 
@@ -142,37 +152,46 @@ public class ${domainName}ServiceTest extends AbstractTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
-	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
-		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
-		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	
+	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
+		    	#if ($type.toLowerCase().equals("string"))
+		    	    ${domainNameVariable}.set$capitalizeProp("Test");
+		    	#elseif ($type.toLowerCase().equals("boolean"))
+		    	    ${domainNameVariable}.set$capitalizeProp(true);
+			#elseif ($type.toLowerCase().equals("long"))
+		    	    ${domainNameVariable}.set$capitalizeProp(1L);
+			#elseif ($type.toLowerCase().equals("int"))
+			    ${domainNameVariable}.set$capitalizeProp(1);
+		    	#end
 	    	#end
-	 #end
+	    	
 
+	 #end
+	 
 	${domainName} ${domainNameVariable}Persisted = ${domainNameVariable}Service.save(${domainNameVariable});
 	assertNotNull("failure - ${domainNameVariable} was not persisted", ${domainNameVariable}Persisted);
-
+	
 	 #foreach($prop in $propertyList.split(","))
 		#set( $index = ${prop.indexOf("=")} )
 	    	#set( $name = ${prop.substring(0, $index)} )
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
-	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
-		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
-		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	
+	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
+		    	#if ($type.toLowerCase().equals("string"))
+		    	    ${domainNameVariable}Persisted.set$capitalizeProp("Test Updated");
+		    	#elseif ($type.toLowerCase().equals("boolean"))
+		    	    ${domainNameVariable}Persisted.set$capitalizeProp(false);
+			#elseif ($type.toLowerCase().equals("long"))
+		    	    ${domainNameVariable}Persisted.set$capitalizeProp(1L);
+			#elseif ($type.toLowerCase().equals("int"))
+			    ${domainNameVariable}Persisted.set$capitalizeProp(1);
+		    	#end
 	    	#end
+	    	
+
 	 #end
-	 ${domainNameVariable}.set$capitalizeProp(${domainNameVariable}Persisted.get$capitalizeProp());
 	 
 	${domainName} modified;
 	assertNotNull("failure - ${domainNameVariable} was not updated",
@@ -231,14 +250,16 @@ public class ${domainName}ServiceTest extends AbstractTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
-	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
-		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
-		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
+		    	#if ($type.toLowerCase().equals("string"))
+		    	    ${domainNameVariable}.set$capitalizeProp("Test");
+		    	#elseif ($type.toLowerCase().equals("boolean"))
+		    	    ${domainNameVariable}.set$capitalizeProp(true);
+			#elseif ($type.toLowerCase().equals("long"))
+		    	    ${domainNameVariable}.set$capitalizeProp(1L);
+			#elseif ($type.toLowerCase().equals("int"))
+			    ${domainNameVariable}.set$capitalizeProp(1);
+		    	#end	    	    
 	    	#end
 	 #end
 

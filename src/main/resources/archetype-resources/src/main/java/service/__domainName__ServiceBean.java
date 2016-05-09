@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ${author}
  * @since 1.0
  */
+
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
+
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ${domainName}ServiceBean implements ${domainName}Service {
@@ -35,14 +37,14 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
     }
 
     @Override
-    @Cacheable(value = "${domainNameVariable}s", key = "${symbol_pound}id")
-    public ${domainName} findOne(Long id) {
-	return ${domainNameVariable}Repository.findOne(id);
+    @Cacheable(value = "${domainNameVariable}s", key = "${symbol_pound}${propertyId}")
+    public ${domainName} findOne(Long ${propertyId}) {
+	return ${domainNameVariable}Repository.findOne(${propertyId});
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}result.id", condition = "${symbol_pound}result != null")
+    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}result.${propertyId}", condition = "${symbol_pound}result != null")
     public ${domainName} save(${domainName} persist) {
 
 	${domainName} ${domainNameVariable} = null;
@@ -55,7 +57,7 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}update.id", condition = "${symbol_pound}result != null")
+    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}update.${propertyId}", condition = "${symbol_pound}result != null")
     public ${domainName} update(${domainName} update) {
 
 	${domainName} ${domainNameVariable} = null;
@@ -73,9 +75,9 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CacheEvict(value = "${domainNameVariable}s", key = "${symbol_pound}id")
-    public void delete(Long id) {
-	${domainNameVariable}Repository.delete(id);
+    @CacheEvict(value = "${domainNameVariable}s", key = "${symbol_pound}${propertyId}")
+    public void delete(Long ${propertyId}) {
+	${domainNameVariable}Repository.delete(${propertyId});
     }
 
     @Override
