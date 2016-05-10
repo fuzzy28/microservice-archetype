@@ -18,7 +18,7 @@
 				<include>**/*.properties</include>
 			</includes>
 		</fileSet>
-		<fileSet encoding="UTF-8">
+		<fileSet filtered="true" encoding="UTF-8">
 			<directory>src/main/resources</directory>
 			<includes>
 				<include>**/*.csv</include>
@@ -47,13 +47,6 @@
 			<includes>
 				<include>.classpath</include>
 				<include>.project</include>
-			</includes>
-		</fileSet>
-		<fileSet encoding="UTF-8">
-			<directory></directory>
-			<includes>
-				<include>.gitignore</include>
-				<include>app.log</include>
 			</includes>
 		</fileSet>
 	</fileSets>

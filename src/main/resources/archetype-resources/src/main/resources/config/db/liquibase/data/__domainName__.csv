@@ -1,0 +1,21 @@
+#set($fieldSize = 0)
+#foreach($prop in $propertyList.split(","))
+	#set($fieldSize = $fieldSize + 1)
+#end
+#foreach($prop in $propertyList.split(","))
+	#set( $index = ${prop.indexOf("=")} )
+	#set( $name = ${prop.substring(0, $index)} )
+$name.toLowerCase()#if($velocityCount < $fieldSize),#end
+#end
+
+#foreach($num in [1..3])
+#foreach($prop in $propertyList.split(","))
+#set( $index = ${prop.indexOf("=")} )
+#set( $name = ${prop.substring(0, $index)} )
+#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
+#set( $index = $index + 1 )
+#set( $type = ${prop.substring($index)} )
+#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))#if($type.toLowerCase().equals("string"))test#elseif($type.toLowerCase().equals("boolean"))true#elseif ($type.toLowerCase().equals("long"))10#elseif($type.toLowerCase().equals("int"))1#end#else$num#end#if($velocityCount < $fieldSize),#end
+#end
+
+#end

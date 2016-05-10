@@ -9,8 +9,8 @@
 
 
 	<changeSet author="jruelos" id="1.0.0">
-		<comment>Load initial data to table department</comment>
-		<loadUpdateData tableName="department" primaryKey="id" file="./config/db/liquibase/data/department.csv" />
+		<comment>Load initial data to table ${domainName.toLowerCase()}</comment>
+		<loadUpdateData tableName="${domainName.toLowerCase()}" primaryKey="$propertyId.toLowerCase()" file="./config/db/liquibase/data/${domainName}.csv" />
 	</changeSet>
 	
 </databaseChangeLog>

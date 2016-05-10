@@ -7,24 +7,33 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-	<changeSet id="1.0.0" author="jruelos" failOnError="true">
+	<changeSet id="1.0.0" author="${author}" failOnError="true">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="department"/>
+				<tableExists tableName="${domainName.toLowerCase()}"/>
 			</not>
 		</preConditions>
-		<comment>Create department table</comment>
-		<createTable tableName="department">
-			<column autoIncrement="true" name="id" type="SERIAL">
-				<constraints primaryKey="true" primaryKeyName="pk_department_id" />
-			</column>
-			<column name="departmentcode" type="VARCHAR(10)">
-				<constraints nullable="false" />
-			</column>
-			<column name="departmentname" type="VARCHAR(100)">
-				<constraints nullable="false" />
-			</column>
-			<column name="active" type="BOOLEAN" defaultValue="true" />			
+		<comment>Create ${domainName.toLowerCase()} table</comment>
+		<createTable tableName="${domainName.toLowerCase()}">		
+		 #foreach($prop in $propertyList.split(","))
+				#set( $index = ${prop.indexOf("=")} )
+		    	#set( $name = ${prop.substring(0, $index)} )
+				#set( $index = $index + 1 )
+		    	#set( $type = ${prop.substring($index)} )	
+		    	#if ($name.toLowerCase().equals($propertyId.toLowerCase()))
+			    	<column autoIncrement="true" name="$propertyId.toLowerCase()" type="SERIAL">
+						<constraints primaryKey="true" primaryKeyName="pk_${domainName.toLowerCase()}_id" />
+					</column>
+				#else
+					#if ($type.toLowerCase().equals("string"))
+	    	   		   <column name="$name.toLowerCase()" type="VARCHAR(100)" />
+	    			#elseif ($type.toLowerCase().equals("boolean"))
+			    	   <column name="$name.toLowerCase()" type="BOOLEAN" defaultValue="true" />
+					#elseif ($type.toLowerCase().equals("long") || $type.toLowerCase().equals("int"))
+			    	   <column name="$name.toLowerCase()" type="INT4" />
+			    	#end
+		    	#end	
+		 #end		 
 		</createTable>
 	</changeSet>
 
