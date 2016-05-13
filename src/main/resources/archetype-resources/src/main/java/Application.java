@@ -12,8 +12,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.hateoas.config.EnableEntityLinks;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 /**
  * Application Startup Class. It serves as both the runtime application entry
  * point and the central Java configuration class.
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 @EnableCaching(order = 2)
+@EnableEntityLinks
 public class Application {
 
     public static void main(String[] args) {
@@ -34,7 +35,7 @@ public class Application {
 
     @Bean
     public CacheManager cacheManager() {
-	GuavaCacheManager cacheManager = new GuavaCacheManager("${domainNameVariable}s");
+	GuavaCacheManager cacheManager = new GuavaCacheManager("${domainName.toLowerCase()}s");
 	return cacheManager;
     }
 

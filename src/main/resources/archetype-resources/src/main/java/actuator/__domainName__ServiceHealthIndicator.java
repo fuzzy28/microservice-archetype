@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class ${domainName}ServiceHealthIndicator implements HealthIndicator {
 
     @Autowired
-    private ${domainName}Service ${domainNameVariable}Service;
+    private ${domainName}Service ${domainName.toLowerCase()}Service;
 
     @Value("${symbol_dollar}{health.indicator.message}")
     private String indicatorMessage;
@@ -30,7 +30,7 @@ public class ${domainName}ServiceHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
 
-	long size = ${domainNameVariable}Service.countAll();
+	long size = ${domainName.toLowerCase()}Service.countAll();
 	boolean has${domainName} = size > 0;
 	return (has${domainName} ? Health.up() : Health.down())
 		.withDetail("info",

@@ -29,59 +29,59 @@ import org.springframework.transaction.annotation.Transactional;
 public class ${domainName}ServiceBean implements ${domainName}Service {
 
     @Autowired
-    private ${domainName}Repository ${domainNameVariable}Repository;
+    private ${domainName}Repository ${domainName.toLowerCase()}Repository;
 
     @Override
     public Collection<${domainName}> findAll() {
-	return ${domainNameVariable}Repository.findAll();
+	return ${domainName.toLowerCase()}Repository.findAll();
     }
 
     @Override
-    @Cacheable(value = "${domainNameVariable}s", key = "${symbol_pound}${propertyId}")
+    @Cacheable(value = "${domainName.toLowerCase()}s", key = "${symbol_pound}${propertyId}")
     public ${domainName} findOne(Long ${propertyId}) {
-	return ${domainNameVariable}Repository.findOne(${propertyId});
+	return ${domainName.toLowerCase()}Repository.findOne(${propertyId});
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}result.${propertyId}", condition = "${symbol_pound}result != null")
+    @CachePut(value = "${domainName.toLowerCase()}s", key = "${symbol_pound}result.${propertyId}", condition = "${symbol_pound}result != null")
     public ${domainName} save(${domainName} persist) {
 
-	${domainName} ${domainNameVariable} = null;
+	${domainName} ${domainName.toLowerCase()} = null;
 	if (persist != null && persist.get$propertyIdentifier() == null) {
-	    ${domainNameVariable} = saveOrUpdate(persist);
+	    ${domainName.toLowerCase()} = saveOrUpdate(persist);
 	}
 
-	return ${domainNameVariable};
+	return ${domainName.toLowerCase()};
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CachePut(value = "${domainNameVariable}s", key = "${symbol_pound}update.${propertyId}", condition = "${symbol_pound}result != null")
+    @CachePut(value = "${domainName.toLowerCase()}s", key = "${symbol_pound}update.${propertyId}", condition = "${symbol_pound}result != null")
     public ${domainName} update(${domainName} update) {
 
-	${domainName} ${domainNameVariable} = null;
+	${domainName} ${domainName.toLowerCase()} = null;
 	if (update != null && update.get$propertyIdentifier() != null
-		&& ${domainNameVariable}Repository.findOne(update.get$propertyIdentifier()) != null) {
-	    ${domainNameVariable} = saveOrUpdate(update);
+		&& ${domainName.toLowerCase()}Repository.findOne(update.get$propertyIdentifier()) != null) {
+	    ${domainName.toLowerCase()} = saveOrUpdate(update);
 	}
 
-	return ${domainNameVariable};
+	return ${domainName.toLowerCase()};
     }
 
-    private ${domainName} saveOrUpdate(${domainName} ${domainNameVariable}) {
-	return ${domainNameVariable}Repository.save(${domainNameVariable});
+    private ${domainName} saveOrUpdate(${domainName} ${domainName.toLowerCase()}) {
+	return ${domainName.toLowerCase()}Repository.save(${domainName.toLowerCase()});
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    @CacheEvict(value = "${domainNameVariable}s", key = "${symbol_pound}${propertyId}")
+    @CacheEvict(value = "${domainName.toLowerCase()}s", key = "${symbol_pound}${propertyId}")
     public void delete(Long ${propertyId}) {
-	${domainNameVariable}Repository.delete(${propertyId});
+	${domainName.toLowerCase()}Repository.delete(${propertyId});
     }
 
     @Override
     public long countAll() {
-	return ${domainNameVariable}Repository.count();
+	return ${domainName.toLowerCase()}Repository.count();
     }
 }

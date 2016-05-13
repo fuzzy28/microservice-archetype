@@ -4,7 +4,7 @@
 package ${package}.controller;
 
 import java.util.Collection;
-
+import java.util.ArrayList;
 import javax.validation.Valid;
 
 import ${package}.domain.${domainName};
@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.hateoas.Resource;
 
 /**
  * The ${domainName}Controller class is a RESTful web service controller. The
@@ -34,49 +37,50 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0
  */
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
-@RequestMapping("/${domainNameVariable}s")
+@RequestMapping("/${domainName.toLowerCase()}s")
 @RestController
+@ExposesResourceFor(${domainName}.class)
 public class ${domainName}Controller {
 
     @Autowired
-    private ${domainName}Service ${domainNameVariable}Service;
+    private ${domainName}Service ${domainName.toLowerCase()}Service;
+    
+    @Autowired
+    private EntityLinks links;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<${domainName}>> getAll${domainName}s() {
-	return new ResponseEntity<Collection<${domainName}>>(
-		${domainNameVariable}Service.findAll(),
-		HttpStatus.OK);
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Collection<Resource<${domainName}>>> getAll${domainName}s() {
+		Collection<Resource<${domainName}>> resources = new ArrayList<>();
+		${domainName.toLowerCase()}Service.findAll().forEach(e -> resources.add(addLinkToSingleResource(e, e.get$propertyIdentifier())));
+		return new ResponseEntity<Collection<Resource<${domainName}>>>(resources, HttpStatus.OK);
+	}
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<${domainName}> get${domainName}ById(
-	    @PathVariable("id") Long ${domainNameVariable}Id) {
+    public ResponseEntity<Resource<${domainName}>> get${domainName}ById(
+	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
 
-	${domainName} ${domainNameVariable} = ${domainNameVariable}Service.findOne(${domainNameVariable}Id);
-	ResponseEntity<${domainName}> response = null;
-	if (${domainNameVariable} == null) {
+	${domainName} ${domainName.toLowerCase()} = ${domainName.toLowerCase()}Service.findOne(${domainName.toLowerCase()}Id);
+	if (${domainName.toLowerCase()} == null) {
 	    throw new ${domainName}NotFoundException();
-	} else {
-	    response = new ResponseEntity<${domainName}>(${domainNameVariable}, HttpStatus.OK);
 	}
-	return response;
+	return new ResponseEntity<Resource<${domainName}>>(addLinkToSingleResource(${domainName.toLowerCase()}, ${domainName.toLowerCase()}Id), HttpStatus.OK);
     }
 
     @RequestMapping(
 	    method = RequestMethod.POST,
 	    consumes = MediaType.APPLICATION_JSON_VALUE,
 	    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<${domainName}> save${domainName}(
+    public ResponseEntity<Resource<${domainName}>> save${domainName}(
 	    @Valid @RequestBody ${domainName} persist) {
 
 	if (persist == null || persist.get$propertyIdentifier() != null) {
 	    throw new ${domainName}NotPersistedException();
 	}
 
-	${domainName} ${domainNameVariable} = ${domainNameVariable}Service.save(persist);
+	${domainName} ${domainName.toLowerCase()} = ${domainName.toLowerCase()}Service.save(persist);
 	HttpHeaders headers = new HttpHeaders();
-	headers.add("location", String.format("/${domainNameVariable}s/%d", ${domainNameVariable}.get$propertyIdentifier()));
-	return new ResponseEntity<${domainName}>(${domainNameVariable}, headers, HttpStatus.CREATED);
+	headers.add("location", String.format("/${domainName.toLowerCase()}s/%d", ${domainName.toLowerCase()}.get$propertyIdentifier()));
+	return new ResponseEntity<Resource<${domainName}>>(addLinkToSingleResource(${domainName.toLowerCase()}, ${domainName.toLowerCase()}.get$propertyIdentifier()), headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -84,37 +88,40 @@ public class ${domainName}Controller {
 	    method = RequestMethod.PUT,
 	    consumes = MediaType.APPLICATION_JSON_VALUE,
 	    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<${domainName}> update${domainName}(
+    public ResponseEntity<Resource<${domainName}>> update${domainName}(
 	    @Valid @RequestBody ${domainName} persist,
-	    @PathVariable("id") Long ${domainNameVariable}Id) {
+	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
 
-	if (persist.get$propertyIdentifier() != null && persist.get$propertyIdentifier() != ${domainNameVariable}Id) {
+	if (persist.get$propertyIdentifier() != null && persist.get$propertyIdentifier() != ${domainName.toLowerCase()}Id) {
 	    throw new ${domainName}IdNotConsistentException();
 	}
 
-	ResponseEntity<${domainName}> response = null;
-	${domainName} ${domainNameVariable} = ${domainNameVariable}Service.update(persist);
-	if (${domainNameVariable} == null) {
+	${domainName} ${domainName.toLowerCase()} = ${domainName.toLowerCase()}Service.update(persist);
+	if (${domainName.toLowerCase()} == null) {
 	    throw new ${domainName}NotFoundException();
-	} else {
-	    response = new ResponseEntity<${domainName}>(${domainNameVariable}, HttpStatus.OK);
 	}
 
-	return response;
+	return new ResponseEntity<Resource<${domainName}>>(addLinkToSingleResource(${domainName.toLowerCase()}, ${domainName.toLowerCase()}Id), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<${domainName}> delete${domainName}ById(
-	    @PathVariable("id") Long ${domainNameVariable}Id) {
+	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
 
 	ResponseEntity<${domainName}> response = null;
-	if (${domainNameVariable}Service.findOne(${domainNameVariable}Id) == null) {
+	if (${domainName.toLowerCase()}Service.findOne(${domainName.toLowerCase()}Id) == null) {
 	    throw new ${domainName}NotFoundException();
 	} else {
-	    ${domainNameVariable}Service.delete(${domainNameVariable}Id);
+	    ${domainName.toLowerCase()}Service.delete(${domainName.toLowerCase()}Id);
 	    response = new ResponseEntity<${domainName}>(HttpStatus.NO_CONTENT);
 	}
 
 	return response;
     }
+    
+	private <T> Resource<T> addLinkToSingleResource(T object, Object id) {
+		Resource<T> resource = new Resource<T>(object);
+		resource.add(links.linkToSingleResource(object.getClass(), id));		
+		return resource;
+	}
 }

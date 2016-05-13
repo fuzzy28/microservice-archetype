@@ -63,8 +63,5 @@
 		<requiredProperty key="author">
 			<defaultValue>Joel F. Ruelos Jr.</defaultValue>
 		</requiredProperty>
-		<requiredProperty key="domainNameVariable">
-			<defaultValue>${artifactId.replace("ems.","")}</defaultValue>
-		</requiredProperty>
 	</requiredProperties>
 </archetype-descriptor>

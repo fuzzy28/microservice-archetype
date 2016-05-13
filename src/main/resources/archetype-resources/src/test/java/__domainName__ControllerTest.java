@@ -40,24 +40,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @Transactional
 public class ${domainName}ControllerTest extends AbstractControllerTest {
 
-    private final String BASE_URI = "/${domainNameVariable}s";
+    private final String BASE_URI = "/${domainName.toLowerCase()}s";
 
     @Mock
-    protected ${domainName}Service ${domainNameVariable}Service;
+    protected ${domainName}Service ${domainName.toLowerCase()}Service;
 
     @InjectMocks
-    protected ${domainName}Controller ${domainNameVariable}Controller;
+    protected ${domainName}Controller ${domainName.toLowerCase()}Controller;
 
     @Before
     public void setup() {
 	MockitoAnnotations.initMocks(this);
 
-	setup(${domainNameVariable}Controller);
+	setup(${domainName.toLowerCase()}Controller);
     }
 
     protected Collection<${domainName}> getAll${domainName}s() {
-	Collection<${domainName}> ${domainNameVariable}s = new ArrayList<>();
-	${domainName} ${domainNameVariable} = new ${domainName}();
+	Collection<${domainName}> ${domainName.toLowerCase()}s = new ArrayList<>();
+	${domainName} ${domainName.toLowerCase()} = new ${domainName}();
 	
 	 #foreach($prop in $propertyList.split(","))
 		#set( $index = ${prop.indexOf("=")} )
@@ -66,19 +66,19 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
 	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test");
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp("Test");
 	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(true);
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp(true);
 		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp(1L);
 		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+		    ${domainName.toLowerCase()}.set$capitalizeProp(1);
 	    	#end
 	 #end
-	 ${domainNameVariable}.set$propertyIdentifier(1L);
-	 ${domainNameVariable}s.add(${domainNameVariable});
+	 ${domainName.toLowerCase()}.set$propertyIdentifier(1L);
+	 ${domainName.toLowerCase()}s.add(${domainName.toLowerCase()});
 
-	${domainName} ${domainNameVariable}2 = new ${domainName}();
+	${domainName} ${domainName.toLowerCase()}2 = new ${domainName}();
 	 #foreach($prop in $propertyList.split(","))
 		#set( $index = ${prop.indexOf("=")} )
 	    	#set( $name = ${prop.substring(0, $index)} )
@@ -86,33 +86,33 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
 	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}2.set$capitalizeProp("Test");
+	    	    ${domainName.toLowerCase()}2.set$capitalizeProp("Test");
 	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}2.set$capitalizeProp(true);
+	    	    ${domainName.toLowerCase()}2.set$capitalizeProp(true);
 		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}2.set$capitalizeProp(1L);
+	    	    ${domainName.toLowerCase()}2.set$capitalizeProp(1L);
 		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}2.set$capitalizeProp(1);
+		    ${domainName.toLowerCase()}2.set$capitalizeProp(1);
 	    	#end
 	 #end
-	 ${domainNameVariable}2.set$propertyIdentifier(2L);
+	 ${domainName.toLowerCase()}2.set$propertyIdentifier(2L);
 
 	
-	 ${domainNameVariable}s.add(${domainNameVariable}2);
-	return ${domainNameVariable}s;
+	 ${domainName.toLowerCase()}s.add(${domainName.toLowerCase()}2);
+	return ${domainName.toLowerCase()}s;
     }
 
     protected ${domainName} getSingle${domainName}(Long id) {
-	Optional<${domainName}> ${domainNameVariable} = getAll${domainName}s()
+	Optional<${domainName}> ${domainName.toLowerCase()} = getAll${domainName}s()
 		.stream()
 		.filter(d -> d.get$propertyIdentifier() == id)
 		.findFirst();
-	return ${domainNameVariable}.isPresent() ? ${domainNameVariable}.get() : null;
+	return ${domainName.toLowerCase()}.isPresent() ? ${domainName.toLowerCase()}.get() : null;
     }
 
     @Test
     public void whenFetchingAllThenShouldListAvailable${domainName}s() throws Exception {
-	when(${domainNameVariable}Service.findAll()).thenReturn(getAll${domainName}s());
+	when(${domainName.toLowerCase()}Service.findAll()).thenReturn(getAll${domainName}s());
 
 	MvcResult response = mockMvc
 		.perform(
@@ -123,13 +123,13 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 
 	assertSuccessStatusAndHasContent(response.getResponse());
 
-	verify(${domainNameVariable}Service, times(1)).findAll();
+	verify(${domainName.toLowerCase()}Service, times(1)).findAll();
     }
 
     @Test
     public void whenFindingExistingRecordThenShouldFetchSuccessfully() throws Exception {
 	Long id = 1L;
-	when(${domainNameVariable}Service.findOne(any(Long.class)))
+	when(${domainName.toLowerCase()}Service.findOne(any(Long.class)))
 		.thenReturn(getSingle${domainName}(id));
 
 	MvcResult response = mockMvc
@@ -138,15 +138,15 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 
 	assertSuccessStatusAndHasContent(response.getResponse());
 
-	verify(${domainNameVariable}Service, times(1)).findOne(id);
+	verify(${domainName.toLowerCase()}Service, times(1)).findOne(id);
     }
 
     @Test
     public void whenFindingNonExistingRecordThenShouldReturnNotFound() throws Exception {
 
-	String expectedErrMessage = "${domainNameVariable} nod found exception";
+	String expectedErrMessage = "${domainName.toLowerCase()} nod found exception";
 	Long id = Long.MAX_VALUE;
-	when(${domainNameVariable}Service.findOne(any(Long.class)))
+	when(${domainName.toLowerCase()}Service.findOne(any(Long.class)))
 		.thenThrow(new ${domainName}NotFoundException(expectedErrMessage));
 
 	mockMvc
@@ -155,16 +155,15 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 			MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()))
 		.andReturn();
 
-	verify(${domainNameVariable}Service, times(1)).findOne(id);
+	verify(${domainName.toLowerCase()}Service, times(1)).findOne(id);
     }
 
     @Test
     public void whenSavingWithoutIdThenEntityShouldBeSaved() throws Exception {
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
-	${domainNameVariable}.set$propertyIdentifier(null);
-	when(${domainNameVariable}Service.save(any(${domainName}.class))).thenReturn(${domainNameVariable});
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
+	when(${domainName.toLowerCase()}Service.save(any(${domainName}.class))).thenReturn(${domainName.toLowerCase()});
 
-	MvcResult response = postRequest(super.objectToJson(${domainNameVariable}));
+	MvcResult response = postRequest(super.objectToJson(${domainName.toLowerCase()}));
 
 	assertEquals(
 		"failure - status not 201",
@@ -181,20 +180,20 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 
 	assertNotNull("failure - persisted hrd returns null", persistedHrd);
 
-	verify(${domainNameVariable}Service, times(1)).save(any(${domainName}.class));
+	verify(${domainName.toLowerCase()}Service, times(1)).save(any(${domainName}.class));
 
-	assertContentEquals(${domainNameVariable}, persistedHrd);
+	assertContentEquals(${domainName.toLowerCase()}, persistedHrd);
 
     }
 
     @Test
     public void whenSavingNotSuccessfullThenShouldReturnInternalServerError()
 	    throws Exception {
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
 
-	when(${domainNameVariable}Service.save(any(${domainName}.class))).thenReturn(null);
+	when(${domainName.toLowerCase()}Service.save(any(${domainName}.class))).thenReturn(null);
 
-	MvcResult response = postRequest(super.objectToJson(${domainNameVariable}));
+	MvcResult response = postRequest(super.objectToJson(${domainName.toLowerCase()}));
 
 	assertEquals(
 		"failure - status not 400",
@@ -222,11 +221,11 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     public void whenUpdatingNonExistingResourceThenShouldReturnNotFound()
 	    throws Exception {
 
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
 
-	when(${domainNameVariable}Service.update(any(${domainName}.class))).thenReturn(null);
+	when(${domainName.toLowerCase()}Service.update(any(${domainName}.class))).thenReturn(null);
 
-	MvcResult response = putRequest(super.objectToJson(${domainNameVariable}), 1L);
+	MvcResult response = putRequest(super.objectToJson(${domainName.toLowerCase()}), 1L);
 
 	assertNotFoundStatusAndHasNoContent(response.getResponse());
     }
@@ -234,14 +233,14 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     @Test
     public void whenUpdatingWithInconsistentIdThenShouldReturnBadRequest()
 	    throws Exception {
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
 
-	when(${domainNameVariable}Service.update(any(${domainName}.class))).thenReturn(${domainNameVariable});
+	when(${domainName.toLowerCase()}Service.update(any(${domainName}.class))).thenReturn(${domainName.toLowerCase()});
 
-	MvcResult response = putRequest(super.objectToJson(${domainNameVariable}), Long.MAX_VALUE);
+	MvcResult response = putRequest(super.objectToJson(${domainName.toLowerCase()}), Long.MAX_VALUE);
 
 	assertEquals(
-		"failure - has fetched non existing ${domainNameVariable}",
+		"failure - has fetched non existing ${domainName.toLowerCase()}",
 		HttpStatus.BAD_REQUEST.value(),
 		response.getResponse().getStatus());
 	assertTrue(
@@ -253,7 +252,7 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     @Test
     public void whenUpdatingExistingResourceThenShouldReturnUpdatedEntity()
 	    throws JsonProcessingException, Exception {
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
 
 	 #foreach($prop in $propertyList.split(","))
 		#set( $index = ${prop.indexOf("=")} )
@@ -262,37 +261,37 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
 	    	#if ($type.toLowerCase().equals("string"))
-	    	    ${domainNameVariable}.set$capitalizeProp("Test Updated");
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp("Test Updated");
 	    	#elseif ($type.toLowerCase().equals("boolean"))
-	    	    ${domainNameVariable}.set$capitalizeProp(false);
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp(false);
 		#elseif ($type.toLowerCase().equals("long"))
-	    	    ${domainNameVariable}.set$capitalizeProp(1L);
+	    	    ${domainName.toLowerCase()}.set$capitalizeProp(1L);
 		#elseif ($type.toLowerCase().equals("int"))
-		    ${domainNameVariable}.set$capitalizeProp(1);
+		    ${domainName.toLowerCase()}.set$capitalizeProp(1);
 	    	#end
 	 #end
-	 ${domainNameVariable}.set$propertyIdentifier(1L);
+	 ${domainName.toLowerCase()}.set$propertyIdentifier(1L);
 
-	when(${domainNameVariable}Service.update(any(${domainName}.class))).thenReturn(${domainNameVariable});
+	when(${domainName.toLowerCase()}Service.update(any(${domainName}.class))).thenReturn(${domainName.toLowerCase()});
 
 	MvcResult response = putRequest(
-		super.objectToJson(${domainNameVariable}),
-		${domainNameVariable}.get$propertyIdentifier());
+		super.objectToJson(${domainName.toLowerCase()}),
+		${domainName.toLowerCase()}.get$propertyIdentifier());
 
-	verify(${domainNameVariable}Service, times(1)).update(any(${domainName}.class));
+	verify(${domainName.toLowerCase()}Service, times(1)).update(any(${domainName}.class));
 
 	${domainName} updatedEntity = super.jsonToObject(
 		response.getResponse().getContentAsString(),
 		${domainName}.class);
 
-	assertContentEquals(${domainNameVariable}, updatedEntity);
+	assertContentEquals(${domainName.toLowerCase()}, updatedEntity);
     }
 
     @Test
     public void whenDeletingNonExistingResourceThenShouldReturnNotFound()
 	    throws Exception {
 
-	when(${domainNameVariable}Service.findOne(any(Long.class))).thenReturn(null);
+	when(${domainName.toLowerCase()}Service.findOne(any(Long.class))).thenReturn(null);
 
 	MvcResult response = mockMvc
 		.perform(
@@ -306,14 +305,14 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenDeletingExistingResourceThenShouldReturnOk() throws Exception {
-	${domainName} ${domainNameVariable} = getSingle${domainName}(1L);
+	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
 
-	when(${domainNameVariable}Service.findOne(any(Long.class))).thenReturn(${domainNameVariable});
+	when(${domainName.toLowerCase()}Service.findOne(any(Long.class))).thenReturn(${domainName.toLowerCase()});
 
 	MvcResult response = mockMvc
 		.perform(
 			MockMvcRequestBuilders
-				.delete(BASE_URI + "/" + ${domainNameVariable}.get$propertyIdentifier()))
+				.delete(BASE_URI + "/" + ${domainName.toLowerCase()}.get$propertyIdentifier()))
 		.andReturn();
 
 	assertEquals(
@@ -325,9 +324,9 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
 		"failure - response has content",
 		response.getResponse().getContentAsString().trim().length() == 0);
 
-	verify(${domainNameVariable}Service, times(1)).findOne(any(Long.class));
+	verify(${domainName.toLowerCase()}Service, times(1)).findOne(any(Long.class));
 
-	verify(${domainNameVariable}Service, times(1)).delete(any(Long.class));
+	verify(${domainName.toLowerCase()}Service, times(1)).delete(any(Long.class));
 
     }
 
@@ -357,7 +356,7 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     private void assertNotFoundStatusAndHasNoContent(MockHttpServletResponse response)
 	    throws Exception {
 	assertEquals(
-		"failure - has fetched non existing ${domainNameVariable}",
+		"failure - has fetched non existing ${domainName.toLowerCase()}",
 		HttpStatus.NOT_FOUND.value(),
 		response.getStatus());
 	assertTrue(
