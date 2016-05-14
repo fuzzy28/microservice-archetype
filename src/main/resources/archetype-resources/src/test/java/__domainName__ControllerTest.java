@@ -26,13 +26,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
+import org.springframework.hateoas.EntityLinks;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
@@ -45,13 +46,16 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     @Mock
     protected ${domainName}Service ${domainName.toLowerCase()}Service;
 
+    @Mock
+    protected EntityLinks links;
+    
     @InjectMocks
     protected ${domainName}Controller ${domainName.toLowerCase()}Controller;
 
     @Before
     public void setup() {
 	MockitoAnnotations.initMocks(this);
-
+	when(links.linkToSingleResource(any(), any())).thenReturn(new Link(BASE_URI));
 	setup(${domainName.toLowerCase()}Controller);
     }
 
@@ -161,6 +165,7 @@ public class ${domainName}ControllerTest extends AbstractControllerTest {
     @Test
     public void whenSavingWithoutIdThenEntityShouldBeSaved() throws Exception {
 	${domainName} ${domainName.toLowerCase()} = getSingle${domainName}(1L);
+	${domainName.toLowerCase()}.set$propertyIdentifier(null);
 	when(${domainName.toLowerCase()}Service.save(any(${domainName}.class))).thenReturn(${domainName.toLowerCase()});
 
 	MvcResult response = postRequest(super.objectToJson(${domainName.toLowerCase()}));
