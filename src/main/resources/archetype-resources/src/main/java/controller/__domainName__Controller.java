@@ -7,11 +7,13 @@ import java.util.Collection;
 import java.util.ArrayList;
 import javax.validation.Valid;
 
-import ${package}.domain.${domainName};
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import ${package}.exception.${domainName}IdNotConsistentException;
 import ${package}.exception.${domainName}NotFoundException;
 import ${package}.exception.${domainName}NotPersistedException;
 import ${package}.service.${domainName}Service;
+import ${package}.domain.${domainName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,7 @@ import org.springframework.hateoas.Resource;
 @RequestMapping("/${domainName.toLowerCase()}s")
 @RestController
 @ExposesResourceFor(${domainName}.class)
+@Api(value = "/${domainName.toLowerCase()}s")
 public class ${domainName}Controller {
 
     @Autowired
@@ -48,14 +51,16 @@ public class ${domainName}Controller {
     @Autowired
     private EntityLinks links;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Collection<Resource<${domainName}>>> getAll${domainName}s() {
-		Collection<Resource<${domainName}>> resources = new ArrayList<>();
-		${domainName.toLowerCase()}Service.findAll().forEach(e -> resources.add(addLinkToSingleResource(e, e.get$propertyIdentifier())));
-		return new ResponseEntity<Collection<Resource<${domainName}>>>(resources, HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "retrieves all ${domainName.toLowerCase()}s.")
+    public ResponseEntity<Collection<Resource<${domainName}>>> getAll${domainName}s() {
+	Collection<Resource<${domainName}>> resources = new ArrayList<>();
+	${domainName.toLowerCase()}Service.findAll().forEach(e -> resources.add(addLinkToSingleResource(e, e.get$propertyIdentifier())));
+	return new ResponseEntity<Collection<Resource<${domainName}>>>(resources, HttpStatus.OK);
+    }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "retrieves a single ${domainName.toLowerCase()} by id.")
     public ResponseEntity<Resource<${domainName}>> get${domainName}ById(
 	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
 
@@ -70,6 +75,7 @@ public class ${domainName}Controller {
 	    method = RequestMethod.POST,
 	    consumes = MediaType.APPLICATION_JSON_VALUE,
 	    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "persists a new ${domainName.toLowerCase()} resource.")
     public ResponseEntity<Resource<${domainName}>> save${domainName}(
 	    @Valid @RequestBody ${domainName} persist) {
 
@@ -88,6 +94,7 @@ public class ${domainName}Controller {
 	    method = RequestMethod.PUT,
 	    consumes = MediaType.APPLICATION_JSON_VALUE,
 	    produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "updates an  already persisted ${domainName.toLowerCase()} resource.")
     public ResponseEntity<Resource<${domainName}>> update${domainName}(
 	    @Valid @RequestBody ${domainName} persist,
 	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
@@ -105,6 +112,7 @@ public class ${domainName}Controller {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "removes an existing ${domainName.toLowerCase()} resource.")
     public ResponseEntity<${domainName}> delete${domainName}ById(
 	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
 
@@ -119,9 +127,9 @@ public class ${domainName}Controller {
 	return response;
     }
     
-	private <T> Resource<T> addLinkToSingleResource(T object, Object id) {
-		Resource<T> resource = new Resource<T>(object);
-		resource.add(links.linkToSingleResource(object.getClass(), id));		
-		return resource;
-	}
+    private <T> Resource<T> addLinkToSingleResource(T object, Object id) {
+	Resource<T> resource = new Resource<T>(object);
+	resource.add(links.linkToSingleResource(object.getClass(), id));		
+	return resource;
+    }
 }
