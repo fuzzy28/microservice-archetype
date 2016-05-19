@@ -29,7 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * The ExceptionHandlerController class is a global exception handler for all
  * controllers.
- * 
+ *
  * @author ${author}
  * @since 1.0
  */
@@ -163,7 +163,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 	return handleCustomException(
 		HttpStatus.NOT_FOUND,
 		"err.rest.notfound.error",
-		"err.ctrl.departmentnotfound.message");
+		"err.ctrl.${domainName.toLowerCase()}notfound.message");
     }
 
     @ExceptionHandler(${domainName}NotPersistedException.class)
@@ -173,7 +173,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 	return handleCustomException(
 		HttpStatus.BAD_REQUEST,
 		"err.rest.badrequest.error",
-		"err.ctrl.departmentnotpersisted.message");
+		"err.ctrl.${domainName.toLowerCase()}notpersisted.message");
     }
 
     @ExceptionHandler(${domainName}IdNotConsistentException.class)
@@ -183,7 +183,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 	return handleCustomException(
 		HttpStatus.BAD_REQUEST,
 		"err.rest.badrequest.error",
-		"err.ctrl.departmentidnotconsistent.message");
+		"err.ctrl.${domainName.toLowerCase()}idnotconsistent.message");
     }
 
     public ResponseEntity<RestErrorDTO> handleCustomException(HttpStatus status,

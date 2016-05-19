@@ -59,7 +59,7 @@ public class ${domainName}Controller {
 	return new ResponseEntity<Collection<Resource<${domainName}>>>(resources, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "retrieves a single ${domainName.toLowerCase()} by id.")
     public ResponseEntity<Resource<${domainName}>> get${domainName}ById(
 	    @PathVariable("id") Long ${domainName.toLowerCase()}Id) {
