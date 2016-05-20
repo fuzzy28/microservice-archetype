@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 
 @Transactional
-public class ${domainName}ServiceTest extends AbstractTest {
+public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ${domainName}Service ${domainName.toLowerCase()}Service;

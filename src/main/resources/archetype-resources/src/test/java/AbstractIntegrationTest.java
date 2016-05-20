@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { Application.class, SecurityConfig.class })
 @WebIntegrationTest
-public abstract class AbstractTest {
+public abstract class AbstractIntegrationTest {
 
     @Test
     public void contextLoads() {

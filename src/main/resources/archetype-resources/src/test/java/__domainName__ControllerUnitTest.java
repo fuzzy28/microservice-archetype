@@ -39,7 +39,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 
 @Transactional
-public class ${domainName}ControllerTest extends AbstractControllerTest {
+public class ${domainName}ControllerUnitTest extends AbstractControllerUnitTest {
 
     private final String BASE_URI = "/${domainName.toLowerCase()}s";
 
