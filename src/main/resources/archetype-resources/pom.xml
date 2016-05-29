@@ -20,6 +20,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<swagger.version>2.2.2</swagger.version>
+		<dbunit.version>2.4.9</dbunit.version>
+		<springtest.dbunit.version>1.1.0</springtest.dbunit.version>
 	</properties>
 
 	<dependencies>
@@ -88,6 +90,18 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>${dbunit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.springtestdbunit</groupId>
+			<artifactId>spring-test-dbunit</artifactId>
+			<version>${springtest.dbunit.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

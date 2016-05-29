@@ -1,25 +1,34 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package};
+package ${package}.service;
 
 import javax.transaction.Transactional;
-
+import ${package}.AbstractIntegrationTest;
 import ${package}.domain.${domainName};
 import ${package}.service.${domainName}Service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+
 import static org.junit.Assert.*;
 
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 
 @Transactional
+@DatabaseSetup("initializeEmpty.xml")
 public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ${domainName}Service ${domainName.toLowerCase()}Service;
 
     @Test
+    @ExpectedDatabase(
+	    assertionMode = DatabaseAssertionMode.NON_STRICT,
+	    value = "successfullyPersisted.xml")
     public void whenPersistingWithoutIdThenShouldPersist() {
 	// assert saving
 	${domainName} ${domainName.toLowerCase()} = new ${domainName}();
@@ -29,7 +38,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-
 	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
 		    	#if ($type.toLowerCase().equals("string"))
 		    	    ${domainName.toLowerCase()}.set$capitalizeProp("Test");
@@ -41,8 +49,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 			    ${domainName.toLowerCase()}.set$capitalizeProp(1);
 		    	#end	    	   
 	    	#end
-
-
 	 #end
 	${domainName} ${domainName.toLowerCase()}Persisted = ${domainName.toLowerCase()}Service.save(${domainName.toLowerCase()});
 	assertNotNull("failure - ${domainName.toLowerCase()} was not persisted", ${domainName.toLowerCase()}Persisted);
@@ -142,7 +148,7 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenUpdateWithValidIdThenShouldSucces() {
+    public void whenUpdateWithValidIdThenShouldSucceed() {
 	// assert saving
 	${domainName} ${domainName.toLowerCase()} = new ${domainName}();
 	
@@ -152,7 +158,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	
 	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
 		    	#if ($type.toLowerCase().equals("string"))
 		    	    ${domainName.toLowerCase()}.set$capitalizeProp("Test");
@@ -164,8 +169,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 			    ${domainName.toLowerCase()}.set$capitalizeProp(1);
 		    	#end
 	    	#end
-	    	
-
 	 #end
 	 
 	${domainName} ${domainName.toLowerCase()}Persisted = ${domainName.toLowerCase()}Service.save(${domainName.toLowerCase()});
@@ -177,7 +180,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 	    	#set( $capitalizeProp = "${name.substring(0,1).toUpperCase()}${name.substring(1)}")
 		#set( $index = $index + 1 )
 	    	#set( $type = ${prop.substring($index)} )
-	    	
 	    	#if (!$name.toLowerCase().equals($propertyId.toLowerCase()))
 		    	#if ($type.toLowerCase().equals("string"))
 		    	    ${domainName.toLowerCase()}Persisted.set$capitalizeProp("Test Updated");
@@ -189,14 +191,11 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 			    ${domainName.toLowerCase()}Persisted.set$capitalizeProp(1);
 		    	#end
 	    	#end
-	    	
-
 	 #end
 	 
 	${domainName} modified;
 	assertNotNull("failure - ${domainName.toLowerCase()} was not updated",
 		modified = ${domainName.toLowerCase()}Service.update(${domainName.toLowerCase()}Persisted));
-	
 	 #foreach($prop in $propertyList.split(","))
 		#set( $index = ${prop.indexOf("=")} )
 	    	#set( $name = ${prop.substring(0, $index)} )
@@ -209,7 +208,7 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenUpdatingWithInvalidIdShouldFail() {
+    public void whenUpdatingWithInvalidIdThenShouldFail() {
 	// assert saving
 	${domainName} ${domainName.toLowerCase()} = new ${domainName}();
 

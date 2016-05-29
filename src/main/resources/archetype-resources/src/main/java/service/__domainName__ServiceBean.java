@@ -39,7 +39,7 @@ public class ${domainName}ServiceBean implements ${domainName}Service {
     @Override
     @Cacheable(value = "${domainName.toLowerCase()}s", key = "${symbol_pound}${propertyId}")
     public ${domainName} findOne(Long ${propertyId}) {
-	return ${domainName.toLowerCase()}Repository.findOne(${propertyId});
+	return ${propertyId} == null ? null : ${domainName.toLowerCase()}Repository.findOne(${propertyId});
     }
 
     @Override
