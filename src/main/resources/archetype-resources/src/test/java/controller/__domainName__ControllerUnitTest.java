@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package};
+package ${package}.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
-
+import ${package}.AbstractControllerUnitTest;
 import ${package}.controller.${domainName}Controller;
 import ${package}.domain.${domainName};
 import ${package}.exception.${domainName}NotFoundException;
