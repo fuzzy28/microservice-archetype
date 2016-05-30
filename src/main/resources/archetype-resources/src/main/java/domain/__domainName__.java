@@ -19,7 +19,7 @@ import javax.persistence.GenerationType;
  * @since 1.0
  */
 
-@Entity
+@Entity(name = "${domainName.toLowerCase()}")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ${domainName} {
 
