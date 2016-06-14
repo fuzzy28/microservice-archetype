@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching(order = 2)
 @EnableEntityLinks
 @EnableWebSecurity
+@EnableDiscoveryClient
 public class Application {
 
     public static void main(String[] args) {
