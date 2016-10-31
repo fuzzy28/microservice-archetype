@@ -1,4 +1,7 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<employee propertycode="Test" propertyname="Test" active="true" />
+	<${domainName.toLowerCase()}#foreach($prop in $propertyList.split(","))#set( $index = ${prop.indexOf("=")} )#set( $name = ${prop.substring(0, $index)} )#set( $index = $index + 1 )#set( $type = ${prop.substring($index)} )#if (!$name.toLowerCase().equals($propertyId.toLowerCase())) $name.toLowerCase()=#if ($type.toLowerCase().equals("string"))"Test"#elseif ($type.toLowerCase().equals("boolean"))"true"#elseif ($type.toLowerCase().equals("long") || $type.toLowerCase().equals("int"))"1"#end #end#end/>
 </dataset>

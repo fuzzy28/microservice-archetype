@@ -15,13 +15,13 @@ import static org.junit.Assert.*;
 
 #set( $propertyIdentifier = "${propertyId.substring(0,1).toUpperCase()}${propertyId.substring(1)}")
 
-@DatabaseSetup("initializeEmpty.xml")
 public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     ${domainName}Service ${domainName.toLowerCase()}Service;
 
     @Test
+    @DatabaseSetup("initializeEmpty.xml")
     @ExpectedDatabase(
 	    assertionMode = DatabaseAssertionMode.NON_STRICT,
 	    value = "persistingWithoutId_expected.xml")
@@ -76,7 +76,7 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @DatabaseSetup(value = "updateWithValidId.xml")
+    @DatabaseSetup(value = "initializeSingleRecord.xml")
     @ExpectedDatabase(
 	    assertionMode = DatabaseAssertionMode.NON_STRICT,
 	    value = "updateWithValidId_expected.xml")
@@ -104,6 +104,7 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @DatabaseSetup(value = "initializeSingleRecord.xml")
     public void whenUpdatingWithInvalidIdThenShouldFail() {
 	// assert saving
 	${domainName} ${domainName.toLowerCase()} = new ${domainName}();
@@ -124,9 +125,6 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 		    ${domainName.toLowerCase()}.set$capitalizeProp(1);
 	    	#end
 	 #end
-
-	assertNull("failure - entity without ID should not be updated",
-		${domainName.toLowerCase()}Service.update(${domainName.toLowerCase()}));
 
 	    	${domainName.toLowerCase()}.set$propertyIdentifier(Long.MAX_VALUE);
 
@@ -159,6 +157,7 @@ public class ${domainName}ServiceTest extends AbstractIntegrationTest {
 	 #end
 
 	${domainName} ${domainName.toLowerCase()}Persisted = ${domainName.toLowerCase()}Service.save(${domainName.toLowerCase()});
+	assertNotNull("failure - ${domainName.toLowerCase()} was not persisted", ${domainName.toLowerCase()}Persisted);
 	${domainName.toLowerCase()}Service.delete(${domainName.toLowerCase()}Persisted.get$propertyIdentifier());
 	assertNull("failure - resource has not been deleted",
 		${domainName.toLowerCase()}Service.findOne(${domainName.toLowerCase()}Persisted.get$propertyIdentifier()));
